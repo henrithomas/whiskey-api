@@ -1,9 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using WhiskeyApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("Whiskeys") ?? "Data Source=Whiskeys.db";
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-builder.Services.AddDbContext<WhiskeyDb>(opt => opt.UseInMemoryDatabase("Whiskey"));
+// builder.Services.AddDbContext<WhiskeyDb>(opt => opt.UseInMemoryDatabase("Whiskey"));
+builder.Services.AddSqlite<WhiskeyDb>(connectionString);
 var app = builder.Build();
+
 
 app.MapGet("/", () => "Hello, World!"); 
 
@@ -16,20 +21,31 @@ app.MapGet("/whiskey/{id}", async (int id, WhiskeyDb db) =>
             ? Results.Ok(new WhiskeyDTO(whiskey))
             : Results.NotFound());
 
-app.MapPost("/whiskey", async (WhiskeyDTO whiskeyDTO, WhiskeyDb db) =>
-{
-    var whiskey = new Whiskey
+app.MapPost(
+    "/whiskey", 
+    async (WhiskeyDTO whiskeyDTO, WhiskeyDb db) =>
     {
-        IsOpen = whiskeyDTO.IsOpen,
-        IsEmpty = whiskeyDTO.IsEmpty,
-        Name = whiskeyDTO.Name
-    };
+        var whiskey = new Whiskey
+        {
+            Name = whiskeyDTO.Name,
+            Country = whiskeyDTO.Country,
+            Aroma = whiskeyDTO.Aroma,
+            Taste = whiskeyDTO.Taste,
+            Finish = whiskeyDTO.Finish,
+            Percentage = whiskeyDTO.Percentage,
+            Cost = whiskeyDTO.Cost,
+            IsOpen = whiskeyDTO.IsOpen,
+            IsEmpty = whiskeyDTO.IsEmpty,
+            URL = whiskeyDTO.URL
+            
+        };
 
-    db.Whiskeys.Add(whiskey);
-    await db.SaveChangesAsync();
+        db.Whiskeys.Add(whiskey);
+        await db.SaveChangesAsync();
 
-    return Results.Created($"/whiskey/{whiskey.Id}", new WhiskeyDTO(whiskey));
-});
+        return Results.Created($"/whiskey/{whiskey.Id}", new WhiskeyDTO(whiskey));
+    }
+);
 
 app.MapPut("/whiskey/{id}", async (int id, WhiskeyDTO whiskeyDTO, WhiskeyDb db) =>
 {
@@ -38,7 +54,15 @@ app.MapPut("/whiskey/{id}", async (int id, WhiskeyDTO whiskeyDTO, WhiskeyDb db) 
     if (whiskey is null) return Results.NotFound();
 
     whiskey.Name = whiskeyDTO.Name;
+    whiskey.Country = whiskeyDTO.Country;
+    whiskey.Aroma = whiskeyDTO.Aroma;
+    whiskey.Taste = whiskeyDTO.Taste;
+    whiskey.Finish = whiskeyDTO.Finish;
+    whiskey.Percentage = whiskeyDTO.Percentage;
+    whiskey.Cost = whiskeyDTO.Cost;
     whiskey.IsOpen = whiskeyDTO.IsOpen;
+    whiskey.IsEmpty = whiskeyDTO.IsEmpty;
+    whiskey.URL = whiskeyDTO.URL;
 
     await db.SaveChangesAsync();
 
@@ -58,46 +82,3 @@ app.MapDelete("/whiskey/{id}", async (int id, WhiskeyDb db) =>
 });
 
 app.Run();
-
-public class Whiskey
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string? Country { get; set; }
-    public string? Aroma { get; set; }
-    public string? Taste { get; set; }
-    public string? Finish { get; set; }
-    public float Percentage { get; set; }
-    public float Cost { get; set; }
-    public bool IsOpen { get; set; }
-    public bool IsEmpty { get; set; }
-    public string? URL { get; set; }
-    public string? Secret { get; set; }
-}
-
-public class WhiskeyDTO
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string? Country { get; set; }
-    public string? Aroma { get; set; }
-    public string? Taste { get; set; }
-    public string? Finish { get; set; }
-    public float Percentage { get; set; }
-    public float Cost { get; set; }
-    public bool IsOpen { get; set; }
-    public bool IsEmpty { get; set; }
-    public string? URL { get; set; }
-    public WhiskeyDTO() { }
-    public WhiskeyDTO(Whiskey whiskey) =>
-    (Id, Name, IsOpen, IsEmpty) = (whiskey.Id, whiskey.Name, whiskey.IsOpen, whiskey.IsEmpty);
-}
-
-
-class WhiskeyDb : DbContext
-{
-    public WhiskeyDb(DbContextOptions<WhiskeyDb> options)
-        : base(options) { }
-
-    public DbSet<Whiskey> Whiskeys => Set<Whiskey>();
-}

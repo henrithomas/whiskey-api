@@ -25,6 +25,11 @@
 *.log
 #*.sql
 *.sqlite
+*.db
+*.db-shm
+*.db-wal
+Migrations
+Migrations/
 
 # OS generated files #
 ######################
