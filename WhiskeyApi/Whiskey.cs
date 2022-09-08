@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 namespace WhiskeyApi.Models
 {
     public class Whiskey
@@ -46,14 +45,5 @@ namespace WhiskeyApi.Models
                 whiskey.IsEmpty, 
                 whiskey.URL
             );
-    }
-
-
-    class WhiskeyDb : DbContext
-    {
-        public WhiskeyDb(DbContextOptions<WhiskeyDb> options)
-            : base(options) { }
-
-        public DbSet<Whiskey> Whiskeys => Set<Whiskey>();
     }
 }
