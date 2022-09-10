@@ -1,0 +1,44 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "whiskey home";
+}
+
+<button class="btn btn-primary" id="get-whiskey">get whiskey</button>
+<ul class="list-group" id="whiskey-results"></ul>
+
+@section scripts
+{
+    <script>
+        const list = document.getElementById('whiskey-results');
+        const get_whiskey = document.getElementById('get-whiskey');
+
+        get_whiskey.addEventListener(
+            'click',
+            () => { show_whiskey(); }
+        );
+
+        const show_whiskey = () =>
+        {
+            list.innerHTML = '';
+
+            fetch('/whiskey')
+            .then(response => response.json())
+            .then(whiskeys => 
+                {
+                    for (let i = 0; i < whiskeys.length; i++)
+                    {
+                        let item = document.createElement('li');
+                        item.classList.add('list-group-item');
+                        item.innerText = `${whiskeys[i].name} ${whiskeys[i].country} ${whiskeys[i].percentage}%`;
+                        item.dataset.id = whiskeys[i].id;
+                        item.addEventListener('click', (event) =>{
+                            console.log(event.target.dataset.id);
+                        });
+                        list.appendChild(item);
+                    }
+                }
+            );
+        }
+    </script>
+}

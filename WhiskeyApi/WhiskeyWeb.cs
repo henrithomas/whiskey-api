@@ -8,10 +8,10 @@ namespace WhiskeyApi.API
     {
         public static void RegisterWhiskeyAPI(this WebApplication app)
         {
-            app.MapGet(
-                "/", 
-                () => "Hello, World!"
-            ); 
+            // app.MapGet(
+            //     "/", 
+            //     () => "Hello, World!"
+            // ); 
 
             app.MapGet(
                 "/whiskey", 
