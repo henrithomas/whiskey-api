@@ -3,9 +3,22 @@
 @{
     ViewData["Title"] = "whiskey home";
 }
+<h1>whiskey api</h1>
+<p>view and add whiskeys...</p>
+<div class="row mt-2">
+    <div class="col">
+        <button class="btn btn-primary" id="get-whiskey">get whiskey</button>
+        <ul class="list-group" id="whiskey-results"></ul>
+    </div>
+    <div class="col">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            new whiskey
+        </button>
+    </div
+</div>
 
-<button class="btn btn-primary" id="get-whiskey">get whiskey</button>
-<ul class="list-group" id="whiskey-results"></ul>
+<partial name="_WhiskeyModal"/>
 
 @section scripts
 {
