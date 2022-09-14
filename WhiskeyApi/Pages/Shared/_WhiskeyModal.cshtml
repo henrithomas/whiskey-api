@@ -1,5 +1,5 @@
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+@* @model WhiskeyDTO *@
+<div class="modal fade" id="whiskey-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">   
                 <div class="container-fluid">
-                    <form>
+                    <form id="whiskey-form">
                         <div class="mb-2">
                             <div class="form-floating mb-2">
                                 <input type="text" class="form-control" id="whiskey-name" placeholder="woodford rye">
@@ -62,7 +62,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
-                <button type="button" class="btn btn-primary">add whiskey</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="save-whiskey">add</button>
             </div>
         </div>
     </div>

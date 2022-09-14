@@ -1,0 +1,79 @@
+@* @model WhiskeyDTO *@
+<div class="modal fade" id="whiskey-edit-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">edit whiskey</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">   
+                <div class="container-fluid">
+                    <form id="whiskey-edit-form">
+                        <div class="mb-2">
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" id="whiskey-edit-name" placeholder="woodford rye">
+                                <label for="whiskey-edit-name" class="form-label">name</label>
+                            </div>
+                            
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" id="whiskey-edit-country" placeholder="kentucky">
+                                <label for="whiskey-edit-country" class="form-label">country</label>
+                            </div>
+                            
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" id="whiskey-edit-aroma" placeholder="apple">
+                                <label for="whiskey-edit-aroma" class="form-label">aroma</label>
+                            </div>
+                            
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" id="whiskey-edit-taste" placeholder="oak">
+                                <label for="whiskey-edit-taste" class="form-label">taste</label>
+                            </div>
+                            
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" id="whiskey-edit-finish" placeholder="clean">
+                                <label for="whiskey-edit-finish" class="form-label">finish</label>
+                            </div>
+
+                            
+                            <div class="input-group mb-2">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="whiskey-edit-perc" placeholder="50.00">
+                                    <label for="whiskey-edit-perc" class="form-label">percentage</label>
+                                </div>
+                                <span class="input-group-text">%</span>
+                            </div>
+                            
+                            <div class="input-group mb-2">
+                                <span class="input-group-text">$</span>
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="whiskey-edit-cost" placeholder="45.00">
+                                    <label for="whiskey-edit-cost" class="form-label">cost</label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" id="whiskey-edit-url" placeholder="woodford.com">
+                                <label for="whiskey-edit-url" class="form-label">url</label>
+                            </div>    
+
+                            <div class="form-check form-switch form-check-inline">
+                                <input type="checkbox" role="switch" id="open-edit-check" class="form-check-input">
+                                <label for="open-edit-check" class="form-check-label">open</label>
+                            </div>
+
+                            <div class="form-check form-switch form-check-inline">
+                                <input type="checkbox" role="switch" id="empty-edit-check" class="form-check-input">
+                                <label for="empty-edit-check" class="form-check-label">empty</label>
+                            </div>     
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="edit-whiskey">save</button>
+            </div>
+        </div>
+    </div>
+</div>

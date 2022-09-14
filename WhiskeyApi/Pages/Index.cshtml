@@ -7,31 +7,65 @@
 <p>view and add whiskeys...</p>
 <div class="row mt-2">
     <div class="col">
-        <button class="btn btn-primary" id="get-whiskey">get whiskey</button>
+        <button class="btn btn-secondary" id="get-whiskey">get whiskey</button>
         <ul class="list-group" id="whiskey-results"></ul>
     </div>
     <div class="col">
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#whiskey-modal">
             new whiskey
         </button>
     </div
 </div>
 
 <partial name="_WhiskeyModal"/>
+<partial name="_WhiskeyEditModal"/>
 
 @section scripts
 {
     <script>
         const list = document.getElementById('whiskey-results');
-        const get_whiskey = document.getElementById('get-whiskey');
+        const get_whiskeys = document.getElementById('get-whiskey');
+        const save = document.getElementById('save-whiskey');
+        const edit = document.getElementById('edit-whiskey');
 
-        get_whiskey.addEventListener(
+        get_whiskeys.addEventListener(
             'click',
             () => { show_whiskey(); }
         );
 
-        const show_whiskey = () =>
+        save.addEventListener(
+            'click',
+            () => { save_whiskey(); }
+        );
+
+        edit.addEventListener(
+            'click',
+            () => { edit_whiskey(); }
+        );
+
+        function get_whiskey(id)
+        {
+            fetch(`/whiskey/${id}`)
+            .then(response => response.json())
+            .then(whiskey => 
+                {
+                    document.getElementById('whiskey-edit-form').dataset.id = whiskey.id;
+                    document.getElementById('whiskey-edit-name').value = whiskey.name;
+                    document.getElementById('whiskey-edit-country').value = whiskey.country;
+                    document.getElementById('whiskey-edit-aroma').value = whiskey.aroma;
+                    document.getElementById('whiskey-edit-taste').value = whiskey.taste;
+                    document.getElementById('whiskey-edit-finish').value = whiskey.finish;
+                    document.getElementById('whiskey-edit-perc').value = whiskey.percentage;
+                    document.getElementById('whiskey-edit-cost').value = whiskey.cost;
+                    document.getElementById('whiskey-edit-url').value = whiskey.url;
+                    document.getElementById('open-edit-check').checked = whiskey.isOpen;
+                    document.getElementById('empty-edit-check').checked = whiskey.isEmpty;
+                }
+            );           
+        }
+
+        function show_whiskey()
         {
             list.innerHTML = '';
 
@@ -43,15 +77,77 @@
                     {
                         let item = document.createElement('li');
                         item.classList.add('list-group-item');
-                        item.innerText = `${whiskeys[i].name} ${whiskeys[i].country} ${whiskeys[i].percentage}%`;
+                        item.innerText = `${whiskeys[i].name}, ${whiskeys[i].country}, ${whiskeys[i].percentage}%`;
                         item.dataset.id = whiskeys[i].id;
-                        item.addEventListener('click', (event) =>{
-                            console.log(event.target.dataset.id);
-                        });
+                        edit_button = document.createElement('button');
+                        edit_button.dataset.id = whiskeys[i].id;
+                        edit_button.classList.add('btn', 'btn-outline-secondary');
+                        edit_button.innerText = 'edit';
+                        edit_button.dataset.bsToggle = 'modal';
+                        edit_button.dataset.bsTarget = '#whiskey-edit-modal';
+                        edit_button.addEventListener(
+                            'click',
+                            (event) => { get_whiskey(event.target.dataset.id); } 
+                        );
+                        item.appendChild(edit_button);
+
                         list.appendChild(item);
                     }
                 }
             );
+        }
+
+        function save_whiskey()
+        {
+            const whisk = 
+            {
+                name: document.getElementById('whiskey-name').value,
+                country: document.getElementById('whiskey-country').value,
+                aroma: document.getElementById('whiskey-aroma').value,
+                taste: document.getElementById('whiskey-taste').value,
+                finish: document.getElementById('whiskey-finish').value,
+                percentage: document.getElementById('whiskey-perc').value,
+                cost: document.getElementById('whiskey-cost').value,
+                url: document.getElementById('whiskey-url').value,
+            };
+            
+            fetch(
+                '/whiskey',
+                {
+                    method: 'POST',
+                    headers:
+                    {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(whisk)
+                }
+            )
+            .then(response => console.log(response.json()))
+            .then(() => 
+                {
+                    show_whiskey()
+                    document.getElementById('whiskey-form').reset()
+                }
+            );
+        }
+
+        function edit_whiskey()
+        {
+            const edit_whisk = 
+            {
+                name: document.getElementById('whiskey-edit-name').value,
+                country: document.getElementById('whiskey-edit-country').value,
+                aroma: document.getElementById('whiskey-edit-aroma').value,
+                taste: document.getElementById('whiskey-edit-taste').value,
+                finish: document.getElementById('whiskey-edit-finish').value,
+                percentage: document.getElementById('whiskey-edit-perc').value,
+                cost: document.getElementById('whiskey-edit-cost').value,
+                url: document.getElementById('whiskey-edit-url').value,
+                isOpen: document.getElementById('open-edit-check').checked,
+                isEmpty: document.getElementById('empty-edit-check').checked
+            };
+            console.log(edit_whisk);
         }
     </script>
 }
