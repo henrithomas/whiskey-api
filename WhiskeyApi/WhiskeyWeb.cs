@@ -75,7 +75,7 @@ namespace WhiskeyApi.API
 
                     await db.SaveChangesAsync();
 
-                    return Results.NoContent();
+                    return Results.Ok(whiskeyDTO);
                 }
             );
 
