@@ -8,14 +8,26 @@
 <div class="row mt-2">
     <div class="col">
         <button class="btn btn-secondary" id="get-whiskey">get whiskey</button>
-        <ul class="list-group" id="whiskey-results"></ul>
-    </div>
-    <div class="col">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#whiskey-modal">
-            new whiskey
+        <button type="button" class="btn btn-secondary float-end" data-bs-toggle="modal" data-bs-target="#whiskey-modal">
+            new
         </button>
-    </div
+        <ul class="list-group" id="whiskey-results"></ul>
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th scope="col">name</th>
+                    <th scope="col">region</th>
+                    <th scope="col">percentage</th>
+                    <th scope="col">options</th>
+                </tr>
+            </thead>
+            <tbody id="whiskey-table">
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    
 </div>
 
 <partial name="_WhiskeyModal"/>
@@ -25,6 +37,7 @@
 {
     <script>
         const list = document.getElementById('whiskey-results');
+        const table = document.getElementById('whiskey-table');
         const get_whiskeys = document.getElementById('get-whiskey');
         const save = document.getElementById('save-whiskey');
         const edit = document.getElementById('edit-whiskey');
@@ -67,7 +80,7 @@
 
         function show_whiskey()
         {
-            list.innerHTML = '';
+            table.innerHTML = '';
 
             fetch('/whiskey')
             .then(response => response.json())
@@ -75,11 +88,15 @@
                 {
                     for (let i = 0; i < whiskeys.length; i++)
                     {
-                        let item = document.createElement('li');
-                        item.classList.add('list-group-item');
-                        item.innerText = `${whiskeys[i].name}, ${whiskeys[i].country}, ${whiskeys[i].percentage}%`;
-                        item.dataset.id = whiskeys[i].id;
-                        
+                        let row = document.createElement('tr');
+                        let name_data = document.createElement('td');
+                        name_data.innerText = whiskeys[i].name;
+                        let reg_data = document.createElement('td');
+                        reg_data.innerText = whiskeys[i].country;
+                        let perc_data = document.createElement('td');
+                        perc_data.innerText = whiskeys[i].percentage;
+
+                        let edit_delete = document.createElement('td');
                         edit_button = document.createElement('button');
                         edit_button.dataset.id = whiskeys[i].id;
                         edit_button.classList.add('btn', 'btn-outline-secondary');
@@ -93,17 +110,21 @@
 
                         del_button = document.createElement('button');
                         del_button.dataset.id = whiskeys[i].id;
-                        del_button.classList.add('btn', 'btn-outline-danger');
+                        del_button.classList.add('btn', 'btn-outline-danger', 'ms-4');
                         del_button.innerText = 'delete';
                         del_button.addEventListener(
                             'click',
                             (event) => { delete_whiskey(event.target.dataset.id); } 
                         );
 
-                        item.appendChild(edit_button);
-                        item.appendChild(del_button);
-
-                        list.appendChild(item);
+                        edit_delete.appendChild(edit_button);
+                        edit_delete.appendChild(del_button);
+                        
+                        row.appendChild(name_data);
+                        row.appendChild(reg_data);
+                        row.appendChild(perc_data);
+                        row.appendChild(edit_delete)
+                        table.appendChild(row);
                     }
                 }
             );
