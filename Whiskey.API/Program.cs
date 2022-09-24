@@ -1,7 +1,8 @@
 using Microsoft.OpenApi.Models;
-using WhiskeyApi.Models;
-using WhiskeyApi.API;
-using WhiskeyApi.DataContext;
+using Whiskey.Data.Models;
+using Whiskey.API.Endpoints;
+using Whiskey.Data;
+using Whiskey.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.MapRazorPages();
 
-app.RegisterWhiskeyAPI();
+app.MapWhiskeyAPI();
 
 app.Run();

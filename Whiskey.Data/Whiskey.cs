@@ -1,6 +1,6 @@
-namespace WhiskeyApi.Models
+namespace Whiskey.Data.Models
 {
-    public class Whiskey
+    public class WhiskeyEntity
     {
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -30,7 +30,7 @@ namespace WhiskeyApi.Models
         public bool IsEmpty { get; set; }
         public string? URL { get; set; }
         public WhiskeyDTO() { }
-        public WhiskeyDTO(Whiskey whiskey) =>
+        public WhiskeyDTO(WhiskeyEntity whiskey) =>
             (Id, Name, Country, Aroma, Taste, Finish, Percentage, Cost, IsOpen, IsEmpty, URL) = 
             (
                 whiskey.Id, 

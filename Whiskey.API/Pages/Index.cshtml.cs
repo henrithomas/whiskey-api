@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace WhiskeyApi.Pages;
+namespace Whiskey.API.Pages;
 
 public class IndexModel : PageModel
 {
