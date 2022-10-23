@@ -72,3 +72,6 @@ _ReSharper.*
 !lib/*.xml
 !/packages/*/lib/*.dll
 !/packages/*/lib/*/*.dll
+
+db
+db/*
