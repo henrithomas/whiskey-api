@@ -25,5 +25,6 @@ app.UseStaticFiles();
 app.MapRazorPages();
 
 app.MapWhiskeyAPI();
+app.MapGinAPI();
 
 app.Run();
